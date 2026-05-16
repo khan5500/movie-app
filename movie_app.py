@@ -1,69 +1,145 @@
+
 import streamlit as st
 import numpy as np
 import time
 
-# 1. Page Basic Configuration
-st.set_page_config(page_title="Cinematic Pro", layout="centered")
+# 1. Page Config forced to tight mobile layout
+st.set_page_config(page_title="Cinematic Pro", layout="centered", page_icon="📱")
 
-# 2. High Visibility Clear Title
-st.markdown("<h1 style='text-align: center; color: #00ff88; background-color: #111111; padding: 10px; border-radius: 10px;'>💎 Cinematic Glass Pro</h1>", unsafe_allow_html=True)
-st.write("---")
+# 2. Complete Mobile App Interface Transformation (CSS)
+st.markdown("""
+<style>
+    /* Force Dark Premium Mobile Theme */
+    .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+        background: linear-gradient(180deg, #05160e 0%, #002914 100%) !important;
+        background-color: #05160e !important;
+    }
+    
+    /* Clean Top Header bar like an Android/iOS App */
+    .app-header {
+        background: rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+        padding: 15px;
+        text-align: center;
+        border-radius: 0 0 20px 20px;
+        margin-bottom: 20px;
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Global Text Styling for High Visibility */
+    h1, h2, h3, h4, p, label, span {
+        color: #ffffff !important;
+        font-weight: bold !important;
+    }
+    
+    /* Dropdown customization to stay clean inside mobile layout */
+    div[data-baseweb="select"] * {
+        color: #111111 !important;
+    }
 
-# 3. Video Upload Studio (This will NEVER disappear)
-st.markdown("### 📹 Camera Studio (Upload Video Here)")
-video_file = st.file_uploader("Click the button below to upload your mobile video:", type=["mp4", "mov", "avi"])
+    /* Style the Camera Studio Container like a real Video Frame */
+    .video-container {
+        background: rgba(255, 255, 255, 0.04);
+        border: 2px dashed rgba(0, 255, 136, 0.4);
+        border-radius: 20px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 25px;
+    }
 
-if video_file is not None:
-    st.video(video_file)
-    st.success("Status: Video Loaded Successfully!")
+    /* Target all buttons to act like professional Mobile App Buttons */
+    div.stButton > button:first-child {
+        background: linear-gradient(90deg, #00ff88 0%, #00b359 100%) !important;
+        color: #000000 !important;
+        font-size: 16px !important;
+        font-weight: 900 !important;
+        border-radius: 12px !important;
+        border: none !important;
+        padding: 12px 20px !important;
+        width: 100% !important;
+        box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3) !important;
+        transition: transform 0.2s ease !important;
+    }
+    
+    div.stButton > button:first-child:active {
+        transform: scale(0.95) !important;
+    }
 
-st.write("---")
+    /* Special Styling for Export/Download Button */
+    .export-btn div.stButton > button:first-child {
+        background: linear-gradient(90deg, #ff0088 0%, #b30059 100%) !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 15px rgba(255, 0, 136, 0.3) !important;
+    }
+</style>
+""", unsafe_allow_html=True)
 
-# 4. Filter Categories
-st.markdown("### 📸 Advanced Camera Filters")
-filter_cat = st.selectbox(
-    "1. Select Filter Category:",
-    ["TikTok Trending Filters", "Sunlight & Outdoor Lighting", "Hollywood Cinematic Tones", "Vintage & Retro Themes"]
-)
+# 3. Mobile Top Navigation Bar Look
+st.markdown("""
+<div class='app-header'>
+    <h2 style='margin:0; color: #00ff88 !important; font-size: 24px;'>💎 CINEMATIC PRO</h2>
+    <p style='margin:0; color: #aaaaaa !important; font-size: 12px;'>Mobile Studio Engine v3.0</p>
+</div>
+""", unsafe_allow_html=True)
 
-if filter_cat == "TikTok Trending Filters":
-    specific_filter = st.selectbox("2. Choose Active Filter:", ["Viral Glow Pro", "Slow-Mo Color Boost", "Cyber Neon Night"])
-elif filter_cat == "Sunlight & Outdoor Lighting":
-    specific_filter = st.selectbox("2. Choose Active Filter:", ["Direct Sunlight Balancer", "Green Flare Fixer", "Shadow Control Boost"])
+# 4. Interactive Live Camera Module
+st.markdown("### 📸 Live Action Camera")
+camera_on = st.checkbox("Toggle Mobile Camera Screen (Open Viewfinder)")
+
+if camera_on:
+    st.info("System Prompt: Allowing access to smartphone camera...")
+    # This invokes the real mobile device camera inside the app
+    st.camera_input("Position your face inside the frame:")
 else:
-    specific_filter = st.selectbox("2. Choose Active Filter:", ["Netflix Original Look", "Action Thriller Tone"])
-
-st.info(f"Active Filter: {specific_filter}")
-st.write("---")
-
-# 5. Moving Background Options
-st.markdown("### 🏙️ AI Moving Backgrounds")
-bg_option = st.selectbox(
-    "Select Moving Background Effect:",
-    ["Original Studio View", "Moving City Traffic", "Swaying Trees & Green Park", "Luxury Hotel Lobby"]
-)
-if bg_option != "Original Studio View":
-    st.success(f"Background Activated: {bg_option}")
+    # 5. Video Studio Box (If camera is off)
+    st.markdown("<div class='video-container'>", unsafe_allow_html=True)
+    st.markdown("<h4 style='margin-top:0;'>📹 Media Import Studio</h4>", unsafe_allow_html=True)
+    video_file = st.file_uploader("Tap to select video from your gallery:", type=["mp4", "mov", "avi"])
+    if video_file is not None:
+        st.video(video_file)
+        st.success("Media Loaded Successfully!")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 st.write("---")
 
-# 6. Audio Booster
-st.markdown("### 🎙️ AI Voice Booster")
-audio_clear = st.checkbox("Activate AI Studio Mic (Remove Noise & Boost Voice)")
-if audio_clear:
-    st.success("Mic Status: Connected! Voice is now crisp.")
+# 6. Dashboard Grid Features (Divided into two clean columns like a mobile app layout)
+st.markdown("### 🛠️ Editing Dashboard")
+col1, col2 = st.columns(2)
+
+with col1:
+    st.markdown("#### 🎬 Video Filters")
+    filter_cat = st.selectbox(
+        "Category:",
+        ["TikTok Glow", "Sunlight Fix", "Hollywood Tone", "Retro Film"]
+    )
+    
+    st.markdown("#### 🎙️ Voice Booster")
+    audio_clear = st.checkbox("AI Mic Boost")
+    if audio_clear:
+        st.caption("✨ Voice Tone Crisp")
+
+with col2:
+    st.markdown("#### 🏙️ Smart BG")
+    bg_option = st.selectbox(
+        "AI Moving Background:",
+        ["Original View", "City Traffic", "Swaying Trees", "Hotel Lobby"]
+    )
+    
+    st.markdown("#### 🔍 Cloud Video")
+    search_query = st.text_input("Search Video Online:", placeholder="Type keywords...")
+    if search_query:
+        st.caption(f"Searching for: '{search_query}'")
 
 st.write("---")
 
-# 7. Big Clear Action Buttons
-st.markdown("### 💎 Studio Controls")
+# 7. Bottom App Action Buttons
+st.markdown("### 🚀 Quick Actions")
 
-if st.button("📸 Apply Camera Filters Now", use_container_width=True):
-    st.info("Filters Ready!")
+if st.button("⚡ Process Cinematic Effects", key="btn_proc"):
+    st.toast("Applying all selected filters...", icon="🪄")
 
-if st.button("🔗 Connect Studio Plus Device", use_container_width=True):
-    st.success("Device Connected!")
-
-if st.button("📥 Download Video for TikTok", use_container_width=True):
+st.markdown("<div class='export-btn'>", unsafe_allow_html=True)
+if st.button("📥 Save & Export to TikTok", key="btn_tok"):
     st.balloons()
-    st.success("Video Exported Successfully!")
+    st.success("Export Complete!")
+st.markdown("</div>", unsafe_allow_html=True)
